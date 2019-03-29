@@ -1,0 +1,16 @@
+﻿@model List<ToDo>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<ul>
+    @foreach (var todo in Model)
+    {
+        <li>@todo.Title</li>
+    }
+</ul>
+
+@await Html.PartialAsync("_AddToDo",new ToDo())
