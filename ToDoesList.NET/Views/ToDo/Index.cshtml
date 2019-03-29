@@ -9,7 +9,7 @@
 <ul>
     @foreach (var todo in Model)
     {
-        <li>@todo.Title</li>
+        <li>@todo.Title<a asp-action="modify" asp-controller="ToDo" asp-route-id="@todo.Id" class="btn btn-default">edit</a><a asp-action="delete" asp-controller="ToDo" asp-route-id="@todo.Id" class="btn btn-default">delete</a></li>
     }
 </ul>
 

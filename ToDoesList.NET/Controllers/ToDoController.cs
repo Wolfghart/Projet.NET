@@ -53,5 +53,47 @@ namespace ToDoesList.NET.Controllers
             }
             return View(liste);
         }
+
+        public async Task<IActionResult> Modify( int ID)
+        {
+            var user = await UserManager.GetUserAsync(HttpContext.User);
+            var todo = Context.ToDo.First(t => t.Id == ID && t.User==user);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+            return View(todo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Modify( int id, ToDo todo)
+        {
+            var user = await UserManager.GetUserAsync(HttpContext.User);
+            var oldtodo = Context.ToDo.First(t => t.Id == id && t.User==user);
+            if (oldtodo == null)
+            {
+                return NotFound();
+            }
+            oldtodo.Title = todo.Title;
+            oldtodo.Description = todo.Description;
+            oldtodo.Date = todo.Date;
+            Context.ToDo.Update(oldtodo);
+            Context.SaveChanges();
+            return RedirectToAction("Index","ToDo");
+        }
+
+        public async Task<IActionResult> delete(int ID)
+        {
+            var user = await UserManager.GetUserAsync(HttpContext.User);
+            var todo = Context.ToDo.First(t => t.Id == ID && t.User == user);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+            Context.ToDo.Remove(todo);
+            Context.SaveChanges();
+
+            return RedirectToAction("Index","ToDo");
+        }
     }
 }
